@@ -1,0 +1,80 @@
+---
+// ReservationForm.astro
+---
+<section class="p-8 bg-white relative">
+  <h2 class="text-xs font-bold text-ticket-muted uppercase tracking-wider mb-6 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+    Detalles de tu Reserva
+  </h2>
+
+  <form id="reserva-form" class="space-y-5">
+    <div>
+      <label for="nombre" class="block text-sm font-medium text-ticket-text mb-1">Nombre Completo</label>
+      <input type="text" id="nombre" name="nombre" required 
+             class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-ticket-accent focus:border-ticket-accent outline-none transition-all text-ticket-text" 
+             placeholder="Ej. Juan Pérez">
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="whatsapp" class="block text-sm font-medium text-ticket-text mb-1">WhatsApp</label>
+        <input type="tel" id="whatsapp" name="whatsapp" required pattern="[0-9]{9}"
+               class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-ticket-accent focus:border-ticket-accent outline-none transition-all font-mono text-sm" 
+               placeholder="9 dígitos">
+      </div>
+      <div>
+        <label for="cantidad" class="block text-sm font-medium text-ticket-text mb-1">Porciones</label>
+        <div class="relative">
+          <select id="cantidad" name="cantidad" required
+                  class="w-full h-12 pl-4 pr-10 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-ticket-accent focus:border-ticket-accent outline-none transition-all appearance-none font-mono text-sm">
+            <option value="1">1 porción</option>
+            <option value="2">2 porciones</option>
+            <option value="3">3 porciones</option>
+            <option value="4">4 porciones</option>
+            <option value="5">5+ porciones</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-ticket-muted">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-ticket-text mb-2">Método de Entrega</label>
+      <div class="grid grid-cols-2 gap-3">
+        <label class="relative flex cursor-pointer rounded-lg border bg-slate-50 p-3 shadow-sm hover:bg-slate-100 transition-colors focus-within:ring-2 focus-within:ring-ticket-accent delivery-label border-slate-200">
+          <input type="radio" name="tipoEntrega" value="RECOJO" class="peer sr-only" checked>
+          <span class="text-sm font-medium text-ticket-text">Recojo en local</span>
+        </label>
+        <label class="relative flex cursor-pointer rounded-lg border bg-slate-50 p-3 shadow-sm hover:bg-slate-100 transition-colors focus-within:ring-2 focus-within:ring-ticket-accent delivery-label border-slate-200">
+          <input type="radio" name="tipoEntrega" value="DELIVERY" class="peer sr-only">
+          <span class="text-sm font-medium text-ticket-text">Delivery</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Sección Condicional: Recojo -->
+    <div id="info-recojo" class="p-4 bg-slate-900 text-white rounded-lg animate-in fade-in slide-in-from-top-2 duration-300">
+      <p class="text-xs font-mono text-slate-400 mb-1">PUNTO DE RECOJO</p>
+      <p class="text-sm font-medium">Nuevo Vistalegre - Vistalegre - Nasca</p>
+      <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="text-ticket-accent text-xs font-bold mt-2 inline-flex items-center gap-1 hover:underline">
+        Abrir en Mapas
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+      </a>
+    </div>
+
+    <!-- Sección Condicional: Delivery -->
+    <div id="info-delivery" class="hidden animate-in fade-in slide-in-from-top-2 duration-300">
+      <label for="direccion" class="block text-sm font-medium text-ticket-text mb-1">Dirección Exacta</label>
+      <textarea id="direccion" name="direccion" rows="2"
+                class="w-full p-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-ticket-accent focus:border-ticket-accent outline-none transition-all text-sm resize-none" 
+                placeholder="Calle, número, referencia cercana"></textarea>
+    </div>
+
+    <button type="submit" class="w-full h-14 bg-ticket-accent text-white rounded-lg font-bold text-lg hover:bg-rose-700 transition-colors shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 active:scale-[0.98]">
+      Generar Ticket
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </button>
+  </form>
+</section>

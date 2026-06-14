@@ -1,7 +1,31 @@
 ---
+// TicketCanvas.astro
 ---
+<!-- Modal for Ticket Preview -->
+<div id="ticket-modal" class="hidden fixed inset-0 z-50 bg-slate-900/80 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+  <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden flex flex-col transform scale-95 transition-transform duration-300" id="ticket-modal-content">
+    <div class="p-4 sm:p-6 border-b border-slate-100 flex justify-between items-center bg-white">
+      <h3 class="text-lg font-bold text-slate-800">¡Reserva Registrada! Tu Ticket Digital</h3>
+      <button id="close-ticket-modal" class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+    </div>
+    <div class="p-4 sm:p-8 bg-slate-50 flex justify-center items-center overflow-x-auto min-h-[200px]">
+      <img id="ticket-preview-image" src="" alt="Ticket Preview" class="max-w-full h-auto rounded-xl shadow-md border border-slate-200" />
+    </div>
+    <div class="p-4 sm:p-6 bg-white flex flex-col sm:flex-row gap-4">
+      <button id="download-ticket-btn" class="flex-1 bg-slate-100 text-slate-700 font-bold h-14 rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 border border-slate-200">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+        Descargar Ticket
+      </button>
+      <a id="whatsapp-redirect-btn" href="#" class="flex-1 bg-[#25D366] text-white font-extrabold text-[1.05rem] h-14 rounded-xl hover:bg-[#20bd59] hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-2 shadow-xl shadow-[#25D366]/40 ring-4 ring-[#25D366]/10">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Confirmar por WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
 <script is:inline>
-  window.generarTicket = async function(reservaId, nombre, cantidad) {
+  window.mostrarTicketModal = async function(reservaId, nombre, cantidad, whatsappUrl) {
     return new Promise((resolve) => {
       // Crear canvas de 800x400 para asegurar nitidez
       const canvas = document.createElement('canvas');
@@ -98,16 +122,66 @@
 
       ctx.resetTransform();
 
-      // Función de descarga
-      const link = document.createElement('a');
-      link.download = `ticket-${reservaId}.png`;
-      link.href = canvas.toDataURL('image/png');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const dataUrl = canvas.toDataURL('image/png');
       
-      // Pequeña pausa para asegurar la descarga antes de redirecciones
-      setTimeout(resolve, 500);
+      // Mostrar en el DOM
+      const modal = document.getElementById('ticket-modal');
+      const modalContent = document.getElementById('ticket-modal-content');
+      const img = document.getElementById('ticket-preview-image');
+      const waBtn = document.getElementById('whatsapp-redirect-btn');
+      const dlBtn = document.getElementById('download-ticket-btn');
+      const closeBtn = document.getElementById('close-ticket-modal');
+
+      if (modal && img && waBtn && dlBtn && closeBtn && modalContent) {
+        img.src = dataUrl;
+        waBtn.href = whatsappUrl;
+        
+        // Función para descargar
+        const downloadAction = () => {
+          const link = document.createElement('a');
+          link.download = `ticket-${reservaId}.png`;
+          link.href = dataUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        
+        // Limpiar event listeners anteriores clonando
+        const newDlBtn = dlBtn.cloneNode(true);
+        dlBtn.parentNode.replaceChild(newDlBtn, dlBtn);
+        newDlBtn.addEventListener('click', downloadAction);
+
+        // Limpiar y configurar botón de cierre
+        const closeModal = () => {
+          modal.classList.add('opacity-0');
+          modalContent.classList.replace('scale-100', 'scale-95');
+          setTimeout(() => {
+            modal.classList.add('hidden');
+          }, 300);
+        };
+        
+        const newCloseBtn = closeBtn.cloneNode(true);
+        closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+        newCloseBtn.addEventListener('click', closeModal);
+
+        // Configurar comportamiento para que cierre modal al hacer click en "Enviar a Whatsapp"
+        const newWaBtn = waBtn.cloneNode(true);
+        waBtn.parentNode.replaceChild(newWaBtn, waBtn);
+        newWaBtn.addEventListener('click', () => {
+          // No preventDefault here so the link actually navigates
+          // We can optionally close the modal if they return
+        });
+
+        // Mostrar Modal con animación
+        modal.classList.remove('hidden');
+        // Pequeño delay para permitir que el display:block tome efecto antes de animar opacidad
+        requestAnimationFrame(() => {
+          modal.classList.remove('opacity-0');
+          modalContent.classList.replace('scale-95', 'scale-100');
+        });
+      }
+      
+      resolve();
     });
   }
 </script>

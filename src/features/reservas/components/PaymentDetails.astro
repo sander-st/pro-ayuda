@@ -1,0 +1,31 @@
+---
+// PaymentDetails.astro
+---
+<section class="p-8 bg-white">
+  <h2 class="text-xs font-bold text-ticket-muted uppercase tracking-wider mb-4 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+    Información de Pago
+  </h2>
+  
+  <div class="space-y-4">
+    <div class="flex items-center justify-between p-3 border border-slate-100 rounded-lg bg-slate-50">
+      <div>
+        <p class="text-sm font-bold text-ticket-text">Yape / Plin</p>
+        <p class="font-mono text-ticket-muted text-sm mt-0.5">902 083 574</p>
+      </div>
+      <button class="copy-btn h-11 px-4 text-xs font-bold text-ticket-accent hover:bg-rose-50 rounded transition-colors active:scale-95" data-copy="902083574">
+        Copiar
+      </button>
+    </div>
+
+    <div class="flex items-center justify-between p-3 border border-slate-100 rounded-lg bg-slate-50">
+      <div>
+        <p class="text-sm font-bold text-ticket-text">BCP Soles</p>
+        <p class="font-mono text-ticket-muted text-sm mt-0.5">191-00000000-0-00</p>
+      </div>
+      <button class="copy-btn h-11 px-4 text-xs font-bold text-ticket-accent hover:bg-rose-50 rounded transition-colors active:scale-95" data-copy="19100000000000">
+        Copiar
+      </button>
+    </div>
+  </div>
+</section>
