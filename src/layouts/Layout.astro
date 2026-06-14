@@ -14,11 +14,24 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="description" content="Pollada Solidaria - Apóyanos con tu colaboración" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- SEO & Open Graph -->
     <title>{title}</title>
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content="Pollada Solidaria - Apóyanos con tu colaboración" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:image" content={new URL('/og-image.jpg', Astro.url)} />
+    
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content="Pollada Solidaria - Apóyanos con tu colaboración" />
+    <meta name="twitter:image" content={new URL('/og-image.jpg', Astro.url)} />
   </head>
   <body class="min-h-screen flex flex-col items-center p-4 sm:p-8">
     <main class="w-full max-w-md bg-ticket-surface rounded-xl shadow-2xl overflow-hidden relative">
