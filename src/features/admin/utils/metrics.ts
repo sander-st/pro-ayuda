@@ -1,6 +1,6 @@
 import type { Reserva } from '@prisma/client';
 
-export const COSTO_PORCION = 15.00;
+export const COSTO_PORCION = 20.00;
 
 export interface Metricas {
   porcionesTotales: number;
