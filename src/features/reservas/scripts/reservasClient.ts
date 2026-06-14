@@ -73,6 +73,33 @@ export function setupReservasClient() {
   // Estado inicial
   updateFormState();
 
+  // Lógica de validación de cantidad de porciones
+  const cantidadInput = document.getElementById('cantidad') as HTMLInputElement | null;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+  const submitText = document.getElementById('submit-text');
+  const submitIcon = document.getElementById('submit-icon');
+
+  if (cantidadInput && submitText && submitBtn) {
+    cantidadInput.addEventListener('input', () => {
+      const val = parseInt(cantidadInput.value || '1', 10);
+      if (val >= 3) {
+        submitText.innerText = 'Contactar por WhatsApp';
+        submitBtn.classList.remove('bg-ticket-accent', 'hover:bg-rose-700', 'shadow-rose-500/30');
+        submitBtn.classList.add('bg-green-500', 'hover:bg-green-600', 'shadow-green-500/30');
+        if (submitIcon) {
+          submitIcon.innerHTML = '<path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />';
+        }
+      } else {
+        submitText.innerText = 'Generar Ticket';
+        submitBtn.classList.add('bg-ticket-accent', 'hover:bg-rose-700', 'shadow-rose-500/30');
+        submitBtn.classList.remove('bg-green-500', 'hover:bg-green-600', 'shadow-green-500/30');
+        if (submitIcon) {
+          submitIcon.innerHTML = '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>';
+        }
+      }
+    });
+  }
+
   // Manejo del formulario
   const form = document.getElementById('reserva-form') as HTMLFormElement | null;
   form?.addEventListener('submit', async (e) => {
@@ -80,6 +107,20 @@ export function setupReservasClient() {
     const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
     if (!btn) return;
     
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    const cantidad = parseInt((data.cantidad as string) || '1', 10);
+
+    if (cantidad >= 3) {
+      // Redirigir a WhatsApp directamente
+      const nombre = data.nombre ? data.nombre.toString().trim() : '';
+      const whatsappNumber = '51902083574'; // Mismo número usado en la API
+      const mensaje = `¡Hola! Quisiera coordinar un pedido de ${cantidad} porciones de la pollada solidaria. Mi nombre es ${nombre}.`;
+      const encodedMensaje = encodeURIComponent(mensaje);
+      window.open(`https://wa.me/${whatsappNumber}?text=${encodedMensaje}`, '_blank');
+      return;
+    }
+
     const originalText = btn.innerHTML;
     
     btn.disabled = true;
@@ -87,8 +128,6 @@ export function setupReservasClient() {
     btn.classList.add('opacity-80', 'cursor-not-allowed');
 
     try {
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
 
       const response = await fetch('/api/reservas', {
         method: 'POST',
