@@ -3,7 +3,11 @@ import { prisma } from '../../lib/db';
 
 export const PATCH: APIRoute = async ({ request }) => {
   try {
-    const { id, entregado } = await request.json();
+    interface ToggleEntregaRequest {
+      id: string;
+      entregado: boolean;
+    }
+    const { id, entregado } = (await request.json()) as ToggleEntregaRequest;
 
     if (!id || typeof entregado !== 'boolean') {
       return new Response(JSON.stringify({ error: 'Datos inválidos' }), { 

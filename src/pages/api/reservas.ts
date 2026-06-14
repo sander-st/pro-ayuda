@@ -2,11 +2,18 @@ import type { APIRoute } from 'astro';
 import { prisma } from '../../lib/db';
 
 // Número de teléfono de los coordinadores (puede venir de env en prod)
-const WHATSAPP_NUMBER = process.env.WHATSAPP_NUMBER || '51999888777';
+const WHATSAPP_NUMBER = import.meta.env.WHATSAPP_NUMBER || process.env.WHATSAPP_NUMBER || '51902083574';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const data = await request.json();
+    interface ReservaRequest {
+      nombre: string;
+      whatsapp: string;
+      cantidad: string;
+      tipoEntrega: 'DELIVERY' | 'RECOJO';
+      direccion?: string;
+    }
+    const data = (await request.json()) as ReservaRequest;
     const { nombre, whatsapp, cantidad, tipoEntrega, direccion } = data;
 
     // Validación básica de entrada
@@ -37,7 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
 🔢 Cantidad: ${cantidad} porción(es)
 🛵 Entrega: ${tipoEntrega === 'DELIVERY' ? 'Delivery' : 'Recojo'}
 📍 Dirección: ${direccionText}
-🆔 ID Ticket: ${reserva.id}
+🆔 ID Ticket: #${reserva.id.substring(0, 8).toUpperCase()}
 
 Adjunto captura de pantalla de mi transferencia de pago. 📸`;
 

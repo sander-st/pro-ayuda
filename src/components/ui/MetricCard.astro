@@ -1,0 +1,14 @@
+---
+interface Props {
+  title: string;
+  value: string | number;
+  description: string;
+  valueColorClass: string;
+}
+const { title, value, description, valueColorClass } = Astro.props;
+---
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+  <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">{title}</p>
+  <p class={`text-3xl font-extrabold ${valueColorClass}`}>{value}</p>
+  <p class="text-xs text-slate-400 mt-2 font-medium">{description}</p>
+</div>

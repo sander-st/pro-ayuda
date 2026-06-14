@@ -22,3 +22,8 @@ model Reserva {
   entregado     Boolean  @default(false)
   fechaCreacion DateTime @default(now())
 }
+
+model AdminConfig {
+  id       Int    @id @default(1)
+  password String @default("PRO-SALUD")
+}
