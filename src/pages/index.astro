@@ -1,0 +1,263 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TicketCanvas from '../components/TicketCanvas.astro';
+---
+
+<Layout title="Pollada Solidaria - Reserva tu Ticket">
+  <!-- Cabecera del Ticket -->
+  <header class="bg-ticket-accent text-white p-8 pb-10 relative">
+    <div class="flex justify-between items-start mb-4">
+      <h1 class="text-3xl font-extrabold uppercase tracking-tight leading-none">Pollada<br/>Solidaria</h1>
+      <span class="font-mono text-sm opacity-80 border border-white/30 px-2 py-1 rounded">Nº 001</span>
+    </div>
+    <p class="text-white/90 text-sm font-medium mb-2 leading-relaxed">
+      Acompáñanos en esta actividad pro-salud. Tu colaboración nos ayuda a cubrir gastos médicos urgentes.
+    </p>
+    <div class="font-mono text-xs opacity-75 mt-4">
+      <p>FECHA: Sábado 24 de Agosto</p>
+      <p>HORA: 12:00 PM - 5:00 PM</p>
+      <p>PRECIO: S/ 15.00 x Porción</p>
+    </div>
+    
+    <!-- Cutout circles for ticket effect -->
+    <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-ticket-bg rounded-full"></div>
+    <div class="absolute -bottom-3 -right-3 w-6 h-6 bg-ticket-bg rounded-full"></div>
+  </header>
+
+  <!-- Línea de corte -->
+  <div class="px-4 bg-white relative">
+    <div class="ticket-tear"></div>
+  </div>
+
+  <!-- Detalles de Pago -->
+  <section class="p-8 bg-white">
+    <h2 class="text-xs font-bold text-ticket-muted uppercase tracking-wider mb-4 flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+      Información de Pago
+    </h2>
+    
+    <div class="space-y-4">
+      <div class="flex items-center justify-between p-3 border border-slate-100 rounded-lg bg-slate-50">
+        <div>
+          <p class="text-sm font-bold text-ticket-text">Yape / Plin</p>
+          <p class="font-mono text-ticket-muted text-sm mt-0.5">999 888 777</p>
+        </div>
+        <button class="copy-btn h-11 px-4 text-xs font-bold text-ticket-accent hover:bg-rose-50 rounded transition-colors active:scale-95" data-copy="999888777">
+          Copiar
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between p-3 border border-slate-100 rounded-lg bg-slate-50">
+        <div>
+          <p class="text-sm font-bold text-ticket-text">BCP Soles</p>
+          <p class="font-mono text-ticket-muted text-sm mt-0.5">191-00000000-0-00</p>
+        </div>
+        <button class="copy-btn h-11 px-4 text-xs font-bold text-ticket-accent hover:bg-rose-50 rounded transition-colors active:scale-95" data-copy="19100000000000">
+          Copiar
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Línea de corte -->
+  <div class="px-4 bg-white relative">
+    <div class="ticket-tear"></div>
+  </div>
+
+  <!-- Formulario -->
+  <section class="p-8 bg-white relative">
+    <h2 class="text-xs font-bold text-ticket-muted uppercase tracking-wider mb-6 flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+      Detalles de tu Reserva
+    </h2>
+
+    <form id="reserva-form" class="space-y-5">
+      <div>
+        <label for="nombre" class="block text-sm font-medium text-ticket-text mb-1">Nombre Completo</label>
+        <input type="text" id="nombre" name="nombre" required 
+               class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-ticket-accent focus:border-ticket-accent outline-none transition-all text-ticket-text" 
+               placeholder="Ej. Juan Pérez">
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="whatsapp" class="block text-sm font-medium text-ticket-text mb-1">WhatsApp</label>
+          <input type="tel" id="whatsapp" name="whatsapp" required pattern="[0-9]{9}"
+                 class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-ticket-accent focus:border-ticket-accent outline-none transition-all font-mono text-sm" 
+                 placeholder="9 dígitos">
+        </div>
+        <div>
+          <label for="cantidad" class="block text-sm font-medium text-ticket-text mb-1">Porciones</label>
+          <div class="relative">
+            <select id="cantidad" name="cantidad" required
+                    class="w-full h-12 pl-4 pr-10 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-ticket-accent focus:border-ticket-accent outline-none transition-all appearance-none font-mono text-sm">
+              <option value="1">1 porción</option>
+              <option value="2">2 porciones</option>
+              <option value="3">3 porciones</option>
+              <option value="4">4 porciones</option>
+              <option value="5">5+ porciones</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-ticket-muted">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-ticket-text mb-2">Método de Entrega</label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="relative flex cursor-pointer rounded-lg border bg-slate-50 p-3 shadow-sm hover:bg-slate-100 transition-colors focus-within:ring-2 focus-within:ring-ticket-accent delivery-label border-slate-200">
+            <input type="radio" name="tipoEntrega" value="RECOJO" class="peer sr-only" checked>
+            <span class="text-sm font-medium text-ticket-text">Recojo en local</span>
+          </label>
+          <label class="relative flex cursor-pointer rounded-lg border bg-slate-50 p-3 shadow-sm hover:bg-slate-100 transition-colors focus-within:ring-2 focus-within:ring-ticket-accent delivery-label border-slate-200">
+            <input type="radio" name="tipoEntrega" value="DELIVERY" class="peer sr-only">
+            <span class="text-sm font-medium text-ticket-text">Delivery</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Sección Condicional: Recojo -->
+      <div id="info-recojo" class="p-4 bg-slate-900 text-white rounded-lg animate-in fade-in slide-in-from-top-2 duration-300">
+        <p class="text-xs font-mono text-slate-400 mb-1">PUNTO DE RECOJO</p>
+        <p class="text-sm font-medium">Nuevo Vistalegre - Vistalegre - Nasca</p>
+        <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="text-ticket-accent text-xs font-bold mt-2 inline-flex items-center gap-1 hover:underline">
+          Abrir en Mapas
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Sección Condicional: Delivery -->
+      <div id="info-delivery" class="hidden animate-in fade-in slide-in-from-top-2 duration-300">
+        <label for="direccion" class="block text-sm font-medium text-ticket-text mb-1">Dirección Exacta</label>
+        <textarea id="direccion" name="direccion" rows="2"
+                  class="w-full p-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-ticket-accent focus:border-ticket-accent outline-none transition-all text-sm resize-none" 
+                  placeholder="Calle, número, referencia cercana"></textarea>
+      </div>
+
+      <button type="submit" class="w-full h-14 bg-ticket-accent text-white rounded-lg font-bold text-lg hover:bg-rose-700 transition-colors shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 active:scale-[0.98]">
+        Generar Ticket
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+    </form>
+  </section>
+
+  <!-- Cutout circles for bottom ticket effect -->
+  <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-ticket-bg rounded-full z-10"></div>
+  <div class="absolute -bottom-3 -right-3 w-6 h-6 bg-ticket-bg rounded-full z-10"></div>
+  
+  <TicketCanvas />
+</Layout>
+
+<script>
+  // Manejo de copiado al portapapeles
+  const copyBtns = document.querySelectorAll('.copy-btn');
+  copyBtns.forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const target = e.currentTarget as HTMLButtonElement;
+      const text = target.dataset.copy;
+      if (text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          const originalText = target.innerText;
+          target.innerText = 'Copiado!';
+          target.classList.add('text-ticket-success');
+          setTimeout(() => {
+            target.innerText = originalText;
+            target.classList.remove('text-ticket-success');
+          }, 2000);
+        } catch (err) {
+          console.error('Error al copiar: ', err);
+        }
+      }
+    });
+  });
+
+  // Lógica de formulario dinámico (Recojo / Delivery)
+  const radios = document.querySelectorAll('input[name="tipoEntrega"]');
+  const infoRecojo = document.getElementById('info-recojo');
+  const infoDelivery = document.getElementById('info-delivery');
+  const direccionInput = document.getElementById('direccion') as HTMLTextAreaElement;
+  const deliveryLabels = document.querySelectorAll('.delivery-label');
+
+  function updateFormState() {
+    const selected = document.querySelector('input[name="tipoEntrega"]:checked') as HTMLInputElement;
+    
+    // Actualizar estilos de los labels
+    deliveryLabels.forEach(label => {
+      const input = label.querySelector('input');
+      if (input?.checked) {
+        label.classList.add('border-ticket-accent', 'bg-rose-50');
+        label.classList.remove('border-slate-200', 'bg-slate-50');
+      } else {
+        label.classList.remove('border-ticket-accent', 'bg-rose-50');
+        label.classList.add('border-slate-200', 'bg-slate-50');
+      }
+    });
+
+    if (selected.value === 'RECOJO') {
+      infoRecojo?.classList.remove('hidden');
+      infoDelivery?.classList.add('hidden');
+      if (direccionInput) {
+        direccionInput.removeAttribute('required');
+        direccionInput.value = '';
+      }
+    } else {
+      infoRecojo?.classList.add('hidden');
+      infoDelivery?.classList.remove('hidden');
+      if (direccionInput) direccionInput.setAttribute('required', 'true');
+    }
+  }
+
+  radios.forEach(radio => {
+    radio.addEventListener('change', updateFormState);
+  });
+
+  // Estado inicial
+  updateFormState();
+
+  // Manejo del formulario
+  const form = document.getElementById('reserva-form') as HTMLFormElement;
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const originalText = btn.innerHTML;
+    
+    btn.disabled = true;
+    btn.innerHTML = 'Generando...';
+    btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+    try {
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const response = await fetch('/api/reservas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        // Generar y descargar ticket en memoria
+        if (window.generarTicket) {
+          await window.generarTicket(result.id, data.nombre, data.cantidad);
+        }
+        
+        // Redirigir a WhatsApp
+        window.location.href = result.whatsappUrl;
+      } else {
+        alert(result.error || 'Ocurrió un error al procesar tu reserva.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Ocurrió un error de conexión al procesar la reserva.');
+    } finally {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      btn.classList.remove('opacity-80', 'cursor-not-allowed');
+    }
+  });
+</script>

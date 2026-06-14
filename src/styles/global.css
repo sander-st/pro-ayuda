@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "Space Mono", monospace;
+
+  --color-ticket-bg: #E2E8F0;
+  --color-ticket-surface: #FFFFFF;
+  --color-ticket-text: #0F172A;
+  --color-ticket-muted: #64748B;
+  --color-ticket-accent: #E11D48;
+  --color-ticket-success: #10B981;
+}
+
+body {
+  background-color: var(--color-ticket-bg);
+  color: var(--color-ticket-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom dashed border for ticket tear effect */
+.ticket-tear {
+  background-image: linear-gradient(to right, var(--color-ticket-muted) 50%, transparent 50%);
+  background-size: 12px 2px;
+  background-repeat: repeat-x;
+  height: 2px;
+  width: 100%;
+}

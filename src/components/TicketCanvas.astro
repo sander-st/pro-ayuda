@@ -1,0 +1,113 @@
+---
+---
+<script is:inline>
+  window.generarTicket = async function(reservaId, nombre, cantidad) {
+    return new Promise((resolve) => {
+      // Crear canvas de 800x400 para asegurar nitidez
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return resolve();
+
+      // Fondo exterior (simulando mesa/superficie)
+      const bgGradient = ctx.createLinearGradient(0, 0, 800, 400);
+      bgGradient.addColorStop(0, '#f8fafc');
+      bgGradient.addColorStop(1, '#e2e8f0');
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, 800, 400);
+
+      // Sombra e interior del ticket
+      ctx.shadowColor = 'rgba(15, 23, 42, 0.15)';
+      ctx.shadowBlur = 30;
+      ctx.shadowOffsetY = 10;
+      ctx.fillStyle = '#ffffff';
+      
+      // Dibujar cuerpo del ticket (con bordes redondeados)
+      ctx.beginPath();
+      ctx.roundRect(40, 40, 720, 320, 16);
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+
+      // Línea de corte (precorte) a X = 580
+      ctx.beginPath();
+      ctx.setLineDash([8, 8]);
+      ctx.moveTo(580, 40);
+      ctx.lineTo(580, 360);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.setLineDash([]); // Reset
+
+      // Troqueles de la línea de corte (superior e inferior)
+      ctx.beginPath();
+      ctx.arc(580, 40, 16, 0, Math.PI * 2);
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(580, 360, 16, 0, Math.PI * 2);
+      ctx.fill();
+
+      // --- Contenido Principal (Izquierda) ---
+      // Degradado cálido para el título
+      const titleGrad = ctx.createLinearGradient(80, 0, 400, 0);
+      titleGrad.addColorStop(0, '#e11d48');
+      titleGrad.addColorStop(1, '#f43f5e');
+      ctx.fillStyle = titleGrad;
+      ctx.font = '900 42px system-ui, -apple-system, sans-serif';
+      ctx.fillText('POLLADA SOLIDARIA', 80, 120);
+      
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '600 24px system-ui, -apple-system, sans-serif';
+      ctx.fillText(`A nombre de: ${nombre.substring(0, 25)}`, 80, 180);
+      
+      ctx.fillStyle = '#64748b';
+      ctx.font = '500 18px monospace';
+      ctx.fillText('FECHA: SAB 24 AGO | 12:00 PM', 80, 230);
+
+      // Badge de Cantidad
+      ctx.fillStyle = '#10b981';
+      ctx.beginPath();
+      ctx.roundRect(80, 270, 220, 50, 8);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 20px system-ui, -apple-system, sans-serif';
+      ctx.fillText(`${cantidad} PORCIÓN(ES)`, 110, 304);
+
+      // --- Talón de control (Derecha) ---
+      ctx.translate(580, 40); 
+      
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '800 24px system-ui, -apple-system, sans-serif';
+      ctx.fillText('TALÓN', 35, 70);
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '600 14px monospace';
+      ctx.fillText('CONTROL', 35, 95);
+
+      ctx.fillStyle = '#e11d48';
+      ctx.font = 'bold 20px monospace';
+      // ID Reserva 
+      const idStr = reservaId.toString().substring(0, 8).toUpperCase();
+      ctx.fillText(`#${idStr}`, 35, 160);
+      
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '800 32px system-ui, -apple-system, sans-serif';
+      ctx.fillText(`${cantidad} X`, 35, 230);
+
+      ctx.resetTransform();
+
+      // Función de descarga
+      const link = document.createElement('a');
+      link.download = `ticket-${reservaId}.png`;
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Pequeña pausa para asegurar la descarga antes de redirecciones
+      setTimeout(resolve, 500);
+    });
+  }
+</script>

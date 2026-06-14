@@ -1,0 +1,221 @@
+---
+import { prisma } from '../lib/db';
+
+// Obtener todas las reservas ordenadas por fecha (las más recientes primero)
+const reservas = await prisma.reserva.findMany({
+  orderBy: { fechaCreacion: 'desc' }
+});
+
+// Cálculos de métricas
+const COSTO_PORCION = 15.00;
+
+const porcionesTotales = reservas.reduce((acc, r) => acc + r.cantidad, 0);
+const recaudacionReal = reservas
+  .filter(r => r.estadoPago === true)
+  .reduce((acc, r) => acc + (r.cantidad * COSTO_PORCION), 0);
+
+const totalDelivery = reservas.filter(r => r.tipoEntrega === 'DELIVERY').length;
+const totalRecojo = reservas.filter(r => r.tipoEntrega === 'RECOJO').length;
+
+// Formateador de moneda
+const formatMoneda = (monto: number) => new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(monto);
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin - Pollada Solidaria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    @import "../styles/global.css";
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 font-sans p-4 sm:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="flex justify-between items-end mb-8">
+      <div>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Panel de Control</h1>
+        <p class="text-slate-500 font-medium mt-1">Gestión logística y financiera</p>
+      </div>
+    </header>
+
+    <!-- Métricas -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recaudación Real</p>
+        <p class="text-3xl font-extrabold text-emerald-600">{formatMoneda(recaudacionReal)}</p>
+        <p class="text-xs text-slate-400 mt-2 font-medium">Solo pagos verificados</p>
+      </div>
+      
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Porciones Vendidas</p>
+        <p class="text-3xl font-extrabold text-slate-900">{porcionesTotales}</p>
+        <p class="text-xs text-slate-400 mt-2 font-medium">Total general reservado</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Envíos Delivery</p>
+        <p class="text-3xl font-extrabold text-blue-600">{totalDelivery}</p>
+        <p class="text-xs text-slate-400 mt-2 font-medium">Pedidos para despachar</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recojo Local</p>
+        <p class="text-3xl font-extrabold text-amber-500">{totalRecojo}</p>
+        <p class="text-xs text-slate-400 mt-2 font-medium">Entregas en puerta</p>
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <th class="p-4">ID Ticket</th>
+              <th class="p-4">Cliente</th>
+              <th class="p-4">Detalle</th>
+              <th class="p-4">Entrega</th>
+              <th class="p-4">Pago</th>
+              <th class="p-4">Estado Logístico</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-sm">
+            {reservas.map((reserva) => (
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="p-4 font-mono font-medium text-slate-600 text-xs uppercase">
+                  {reserva.id.substring(0,8)}
+                </td>
+                <td class="p-4">
+                  <p class="font-bold text-slate-900">{reserva.nombre}</p>
+                  <a href={`https://wa.me/${reserva.whatsapp}`} target="_blank" class="text-emerald-600 font-medium hover:underline text-xs flex items-center gap-1 mt-0.5">
+                    WA: {reserva.whatsapp}
+                  </a>
+                </td>
+                <td class="p-4">
+                  <span class="inline-flex items-center justify-center px-2 py-1 bg-slate-100 text-slate-800 rounded font-bold">
+                    {reserva.cantidad} x
+                  </span>
+                  <span class="text-slate-500 ml-2 font-medium">{formatMoneda(reserva.cantidad * COSTO_PORCION)}</span>
+                </td>
+                <td class="p-4">
+                  <span class={`inline-block px-2 py-1 rounded text-xs font-bold ${reserva.tipoEntrega === 'DELIVERY' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'}`}>
+                    {reserva.tipoEntrega}
+                  </span>
+                  {reserva.direccion && (
+                    <p class="text-xs text-slate-500 mt-1 max-w-[150px] truncate" title={reserva.direccion}>{reserva.direccion}</p>
+                  )}
+                </td>
+                <td class="p-4">
+                  <button 
+                    class={`toggle-pago w-24 h-8 rounded text-xs font-bold transition-colors shadow-sm focus:ring-2 focus:ring-offset-1 focus:outline-none ${reserva.estadoPago ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 focus:ring-emerald-500' : 'bg-rose-100 text-rose-700 hover:bg-rose-200 focus:ring-rose-500'}`}
+                    data-id={reserva.id}
+                    data-current={reserva.estadoPago.toString()}
+                  >
+                    {reserva.estadoPago ? 'PAGADO' : 'PENDIENTE'}
+                  </button>
+                </td>
+                <td class="p-4">
+                  <button 
+                    class={`toggle-entrega w-28 h-8 rounded text-xs font-bold transition-colors shadow-sm focus:ring-2 focus:ring-offset-1 focus:outline-none ${reserva.entregado ? 'bg-slate-800 text-white hover:bg-slate-700 focus:ring-slate-900' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 focus:ring-slate-400 border border-slate-200'}`}
+                    data-id={reserva.id}
+                    data-current={reserva.entregado.toString()}
+                  >
+                    {reserva.entregado ? 'ENTREGADO' : 'POR DESPACHAR'}
+                  </button>
+                </td>
+              </tr>
+            ))}
+            
+            {reservas.length === 0 && (
+              <tr>
+                <td colspan="6" class="p-8 text-center text-slate-500 font-medium">No hay reservas registradas aún.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Manejo de botones de Pago
+    document.querySelectorAll('.toggle-pago').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const id = target.getAttribute('data-id');
+        const currentState = target.getAttribute('data-current') === 'true';
+        const newState = !currentState;
+        
+        target.disabled = true;
+        target.classList.add('opacity-50');
+
+        try {
+          const res = await fetch('/api/toggle-pago', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, estadoPago: newState })
+          });
+          
+          if (res.ok) {
+            target.setAttribute('data-current', newState.toString());
+            target.innerText = newState ? 'PAGADO' : 'PENDIENTE';
+            if (newState) {
+              target.className = 'toggle-pago w-24 h-8 rounded text-xs font-bold transition-colors shadow-sm focus:ring-2 focus:ring-offset-1 focus:outline-none bg-emerald-100 text-emerald-700 hover:bg-emerald-200 focus:ring-emerald-500';
+            } else {
+              target.className = 'toggle-pago w-24 h-8 rounded text-xs font-bold transition-colors shadow-sm focus:ring-2 focus:ring-offset-1 focus:outline-none bg-rose-100 text-rose-700 hover:bg-rose-200 focus:ring-rose-500';
+            }
+          } else {
+            alert('Error al actualizar el pago');
+          }
+        } catch (error) {
+          alert('Error de red');
+        } finally {
+          target.disabled = false;
+          target.classList.remove('opacity-50');
+        }
+      });
+    });
+
+    // Manejo de botones de Entrega
+    document.querySelectorAll('.toggle-entrega').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const id = target.getAttribute('data-id');
+        const currentState = target.getAttribute('data-current') === 'true';
+        const newState = !currentState;
+        
+        target.disabled = true;
+        target.classList.add('opacity-50');
+
+        try {
+          const res = await fetch('/api/toggle-entrega', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, entregado: newState })
+          });
+          
+          if (res.ok) {
+            target.setAttribute('data-current', newState.toString());
+            target.innerText = newState ? 'ENTREGADO' : 'POR DESPACHAR';
+            if (newState) {
+              target.className = 'toggle-entrega w-28 h-8 rounded text-xs font-bold transition-colors shadow-sm focus:ring-2 focus:ring-offset-1 focus:outline-none bg-slate-800 text-white hover:bg-slate-700 focus:ring-slate-900';
+            } else {
+              target.className = 'toggle-entrega w-28 h-8 rounded text-xs font-bold transition-colors shadow-sm focus:ring-2 focus:ring-offset-1 focus:outline-none bg-slate-100 text-slate-600 hover:bg-slate-200 focus:ring-slate-400 border border-slate-200';
+            }
+          } else {
+            alert('Error al actualizar entrega');
+          }
+        } catch (error) {
+          alert('Error de red');
+        } finally {
+          target.disabled = false;
+          target.classList.remove('opacity-50');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

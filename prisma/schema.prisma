@@ -1,0 +1,24 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum TipoEntrega {
+  DELIVERY
+  RECOJO
+}
+
+model Reserva {
+  id            String   @id @default(cuid())
+  nombre        String
+  whatsapp      String
+  cantidad      Int
+  tipoEntrega   TipoEntrega
+  direccion     String?
+  estadoPago    Boolean  @default(false)
+  entregado     Boolean  @default(false)
+  fechaCreacion DateTime @default(now())
+}
