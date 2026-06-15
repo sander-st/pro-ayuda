@@ -7,11 +7,13 @@ interface TableProps {
   reservas: Reserva[];
   updatingPagoIds: Set<string>;
   updatingEntregaIds: Set<string>;
+  deletingIds: Set<string>;
   onTogglePago: (id: string, current: boolean) => void;
   onToggleEntrega: (id: string, current: boolean) => void;
+  onDeleteReserva: (id: string) => void;
 }
 
-export function AdminTable({ reservas, updatingPagoIds, updatingEntregaIds, onTogglePago, onToggleEntrega }: TableProps) {
+export function AdminTable({ reservas, updatingPagoIds, updatingEntregaIds, deletingIds, onTogglePago, onToggleEntrega, onDeleteReserva }: TableProps) {
   return (
     <Card className="border border-slate-100 shadow-sm rounded-2xl overflow-hidden bg-white">
       <CardContent className="p-0 overflow-x-auto">
@@ -24,6 +26,7 @@ export function AdminTable({ reservas, updatingPagoIds, updatingEntregaIds, onTo
               <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">Entrega</TableHead>
               <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">Pago</TableHead>
               <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">Logística</TableHead>
+              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4 text-center w-[60px] sm:w-[80px]">Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -33,13 +36,15 @@ export function AdminTable({ reservas, updatingPagoIds, updatingEntregaIds, onTo
                 reserva={r}
                 isUpdatingPago={updatingPagoIds.has(r.id)}
                 isUpdatingEntrega={updatingEntregaIds.has(r.id)}
+                isDeleting={deletingIds.has(r.id)}
                 onTogglePago={onTogglePago}
                 onToggleEntrega={onToggleEntrega}
+                onDelete={onDeleteReserva}
               />
             ))}
             {reservas.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="p-8 text-center text-slate-500 font-medium">
+                <TableCell colSpan={7} className="p-8 text-center text-slate-500 font-medium">
                   No hay reservas registradas aún.
                 </TableCell>
               </TableRow>

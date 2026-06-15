@@ -3,7 +3,7 @@ import { TableRow, TableCell } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { COSTO_PORCION, formatMoneda } from "../utils/metrics"
-import { Loader2 } from "lucide-react"
+import { Loader2, Trash2 } from "lucide-react"
 
 export interface Reserva {
   id: string;
@@ -21,11 +21,13 @@ interface RowProps {
   reserva: Reserva;
   isUpdatingPago: boolean;
   isUpdatingEntrega: boolean;
+  isDeleting: boolean;
   onTogglePago: (id: string, current: boolean) => void;
   onToggleEntrega: (id: string, current: boolean) => void;
+  onDelete: (id: string) => void;
 }
 
-export function AdminTableRow({ reserva, isUpdatingPago, isUpdatingEntrega, onTogglePago, onToggleEntrega }: RowProps) {
+export function AdminTableRow({ reserva, isUpdatingPago, isUpdatingEntrega, isDeleting, onTogglePago, onToggleEntrega, onDelete }: RowProps) {
   const whatsappUrl = `https://wa.me/${reserva.whatsapp}`;
   const total = reserva.cantidad * COSTO_PORCION;
   
@@ -61,6 +63,18 @@ export function AdminTableRow({ reserva, isUpdatingPago, isUpdatingEntrega, onTo
       <TableCell className="p-2.5 sm:p-4">
         <Button onClick={() => onToggleEntrega(reserva.id, reserva.entregado)} disabled={isUpdatingEntrega} size="sm" className={`h-7 px-2 text-[10px] sm:text-xs font-bold cursor-pointer w-26 sm:w-32 ${reserva.entregado ? 'bg-slate-800 text-white hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'}`}>
           {isUpdatingEntrega ? <Loader2 className="animate-spin" data-icon="inline-start" /> : (reserva.entregado ? 'ENTREGADO' : 'POR DESPACHAR')}
+        </Button>
+      </TableCell>
+      <TableCell className="p-2.5 sm:p-4 text-center">
+        <Button
+          onClick={() => onDelete(reserva.id)}
+          disabled={isDeleting}
+          variant="destructive"
+          size="sm"
+          className="h-7 w-7 p-0 rounded-lg cursor-pointer bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 shadow-sm"
+          title="Eliminar Reserva"
+        >
+          {isDeleting ? <Loader2 className="animate-spin size-3.5" /> : <Trash2 className="size-3.5" />}
         </Button>
       </TableCell>
     </TableRow>
