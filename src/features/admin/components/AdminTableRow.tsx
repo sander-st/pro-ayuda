@@ -28,8 +28,16 @@ interface RowProps {
 export function AdminTableRow({ reserva, isUpdatingPago, isUpdatingEntrega, onTogglePago, onToggleEntrega }: RowProps) {
   const whatsappUrl = `https://wa.me/${reserva.whatsapp}`;
   const total = reserva.cantidad * COSTO_PORCION;
+  
+  let rowClass = "hover:bg-slate-50 transition-colors text-xs sm:text-sm";
+  if (reserva.entregado) {
+    rowClass = "bg-amber-50/40 hover:bg-amber-50/60 transition-colors text-xs sm:text-sm";
+  } else if (reserva.estadoPago) {
+    rowClass = "bg-emerald-50/40 hover:bg-emerald-50/60 transition-colors text-xs sm:text-sm";
+  }
+
   return (
-    <TableRow className="hover:bg-slate-50 transition-colors text-xs sm:text-sm">
+    <TableRow className={rowClass}>
       <TableCell className="font-mono text-slate-500 text-[10px] sm:text-xs uppercase p-2.5 sm:p-4">{reserva.id.substring(0, 8)}</TableCell>
       <TableCell className="p-2.5 sm:p-4">
         <p className="font-bold text-slate-900 text-xs sm:text-sm line-clamp-1">{reserva.nombre}</p>
