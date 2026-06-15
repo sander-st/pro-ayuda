@@ -44,7 +44,7 @@ export function AdminDashboard({ initialReservas, initialSettingsOpen = false, s
   };
 
   return (
-    <div className="max-w-6xl mx-auto flex flex-col gap-6">
+    <div className="max-w-6xl mx-auto flex flex-col gap-6 w-full min-w-0">
       <AdminHeader onSettingsClick={() => setIsSettingsOpen(true)} />
       <AdminMetricsGrid recaudacionReal={recaudacionReal} porcionesTotales={porcionesTotales} totalDelivery={totalDelivery} totalRecojo={totalRecojo} />
       <AdminFilters search={search} setSearch={setSearch} sortBy={sortBy} setSortBy={setSortBy} filterStatus={filterStatus} setFilterStatus={setFilterStatus} />
