@@ -39,7 +39,7 @@ export function setupReservasClient() {
   function updateFormState() {
     const selected = document.querySelector('input[name="tipoEntrega"]:checked') as HTMLInputElement | null;
     if (!selected) return;
-    
+
     // Actualizar estilos de los labels
     deliveryLabels.forEach(label => {
       const input = label.querySelector('input');
@@ -106,7 +106,7 @@ export function setupReservasClient() {
     e.preventDefault();
     const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
     if (!btn) return;
-    
+
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     const cantidad = parseInt((data.cantidad as string) || '1', 10);
@@ -114,7 +114,7 @@ export function setupReservasClient() {
     if (cantidad >= 3) {
       // Redirigir a WhatsApp directamente
       const nombre = data.nombre ? data.nombre.toString().trim() : '';
-      const whatsappNumber = '51902083574'; // Mismo número usado en la API
+      const whatsappNumber = '51968928843'; // Mismo número usado en la API
       const mensaje = `¡Hola! Quisiera coordinar un pedido de ${cantidad} porciones de la pollada solidaria. Mi nombre es ${nombre}.`;
       const encodedMensaje = encodeURIComponent(mensaje);
       window.open(`https://wa.me/${whatsappNumber}?text=${encodedMensaje}`, '_blank');
@@ -122,7 +122,7 @@ export function setupReservasClient() {
     }
 
     const originalText = btn.innerHTML;
-    
+
     btn.disabled = true;
     btn.innerHTML = 'Generando...';
     btn.classList.add('opacity-80', 'cursor-not-allowed');
