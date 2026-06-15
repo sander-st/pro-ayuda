@@ -16,41 +16,41 @@ export function AdminMetricsGrid({
   totalRecojo,
 }: AdminMetricsGridProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <Card className="border border-slate-100 shadow-sm rounded-2xl">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider">Recaudación Real</CardTitle>
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+      <Card className="border border-slate-100 shadow-sm rounded-2xl p-3 sm:p-4">
+        <CardHeader className="p-0 pb-1">
+          <CardTitle className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Recaudación</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-extrabold text-emerald-600">{formatMoneda(recaudacionReal)}</p>
-          <p className="text-xs text-slate-400 mt-2 font-medium">Solo pagos verificados</p>
+        <CardContent className="p-0">
+          <p className="text-lg sm:text-2xl font-extrabold text-emerald-600">{formatMoneda(recaudacionReal)}</p>
+          <p className="text-[10px] text-slate-400 font-medium">Pagos verificados</p>
         </CardContent>
       </Card>
-      <Card className="border border-slate-100 shadow-sm rounded-2xl">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider">Porciones Vendidas</CardTitle>
+      <Card className="border border-slate-100 shadow-sm rounded-2xl p-3 sm:p-4">
+        <CardHeader className="p-0 pb-1">
+          <CardTitle className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Vendidas</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-extrabold text-slate-900">{porcionesTotales}</p>
-          <p className="text-xs text-slate-400 mt-2 font-medium">Total general reservado</p>
+        <CardContent className="p-0">
+          <p className="text-lg sm:text-2xl font-extrabold text-slate-900">{porcionesTotales}</p>
+          <p className="text-[10px] text-slate-400 font-medium">Porciones totales</p>
         </CardContent>
       </Card>
-      <Card className="border border-slate-100 shadow-sm rounded-2xl">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider">Envíos Delivery</CardTitle>
+      <Card className="border border-slate-100 shadow-sm rounded-2xl p-3 sm:p-4">
+        <CardHeader className="p-0 pb-1">
+          <CardTitle className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Delivery</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-extrabold text-blue-600">{totalDelivery}</p>
-          <p className="text-xs text-slate-400 mt-2 font-medium">Pedidos para despachar</p>
+        <CardContent className="p-0">
+          <p className="text-lg sm:text-2xl font-extrabold text-blue-600">{totalDelivery}</p>
+          <p className="text-[10px] text-slate-400 font-medium">Para despachar</p>
         </CardContent>
       </Card>
-      <Card className="border border-slate-100 shadow-sm rounded-2xl">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider">Recojo Local</CardTitle>
+      <Card className="border border-slate-100 shadow-sm rounded-2xl p-3 sm:p-4">
+        <CardHeader className="p-0 pb-1">
+          <CardTitle className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Local</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-extrabold text-amber-500">{totalRecojo}</p>
-          <p className="text-xs text-slate-400 mt-2 font-medium">Entregas en puerta</p>
+        <CardContent className="p-0">
+          <p className="text-lg sm:text-2xl font-extrabold text-amber-500">{totalRecojo}</p>
+          <p className="text-[10px] text-slate-400 font-medium">Entrega en puerta</p>
         </CardContent>
       </Card>
     </div>

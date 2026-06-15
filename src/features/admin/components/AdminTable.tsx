@@ -18,12 +18,12 @@ export function AdminTable({ reservas, updatingPagoIds, updatingEntregaIds, onTo
         <Table>
           <TableHeader>
             <TableRow className="bg-slate-50/50 hover:bg-slate-50/50 border-b border-slate-100">
-              <TableHead className="w-[100px] font-bold text-slate-500 uppercase tracking-wider text-xs p-4">ID Ticket</TableHead>
-              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-xs p-4">Cliente</TableHead>
-              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-xs p-4">Detalle</TableHead>
-              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-xs p-4">Entrega</TableHead>
-              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-xs p-4">Pago</TableHead>
-              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-xs p-4">Logística</TableHead>
+              <TableHead className="w-[80px] sm:w-[100px] font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">ID Ticket</TableHead>
+              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">Cliente</TableHead>
+              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">Detalle</TableHead>
+              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">Entrega</TableHead>
+              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">Pago</TableHead>
+              <TableHead className="font-bold text-slate-500 uppercase tracking-wider text-[10px] sm:text-xs p-2.5 sm:p-4">Logística</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
