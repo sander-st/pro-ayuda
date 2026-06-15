@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { prisma } from '../../lib/db';
 
 // Número de teléfono de los coordinadores (puede venir de env en prod)
-const WHATSAPP_NUMBER = import.meta.env.WHATSAPP_NUMBER || process.env.WHATSAPP_NUMBER || '51902083574';
+const WHATSAPP_NUMBER = import.meta.env.WHATSAPP_NUMBER || process.env.WHATSAPP_NUMBER || '51968928843';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
