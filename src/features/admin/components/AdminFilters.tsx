@@ -14,20 +14,20 @@ interface FiltersProps {
 
 export function AdminFilters({ search, setSearch, sortBy, setSortBy, filterStatus, setFilterStatus }: FiltersProps) {
   return (
-    <div className="flex flex-col md:flex-row gap-3 items-center justify-between mb-4">
-      <div className="relative w-full md:max-w-md">
+    <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between mb-4">
+      <div className="relative flex-1 sm:max-w-xs md:max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-4" />
         <Input
           type="text"
           placeholder="Buscar por ticket, nombre o whatsapp..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-9 bg-white border-slate-200 rounded-xl h-9"
+          className="pl-9 bg-white border-slate-200 rounded-xl"
         />
       </div>
-      <div className="flex gap-2 w-full md:w-auto">
+      <div className="grid grid-cols-2 sm:flex gap-2">
         <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="flex-1 md:flex-initial h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer min-w-[140px]">
+          <SelectTrigger className="w-full sm:w-[140px] rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer">
             <SelectValue placeholder="Todos los estados" />
           </SelectTrigger>
           <SelectContent position="popper" className="bg-white rounded-xl border border-slate-100 shadow-lg text-xs">
@@ -44,7 +44,7 @@ export function AdminFilters({ search, setSearch, sortBy, setSortBy, filterStatu
         </Select>
 
         <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="flex-1 md:flex-initial h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer min-w-[170px]">
+          <SelectTrigger className="w-full sm:w-[170px] rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer">
             <SelectValue placeholder="Ordenar por" />
           </SelectTrigger>
           <SelectContent position="popper" className="bg-white rounded-xl border border-slate-100 shadow-lg text-xs">
