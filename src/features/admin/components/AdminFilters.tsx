@@ -15,7 +15,7 @@ interface FiltersProps {
 export function AdminFilters({ search, setSearch, sortBy, setSortBy, filterStatus, setFilterStatus }: FiltersProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between mb-4 w-full min-w-0">
-      <div className="relative w-full border border-amber-500 sm:w-72 md:w-96">
+      <div className="relative w-full sm:w-72 md:w-96">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-4" />
         <Input
           type="text"
