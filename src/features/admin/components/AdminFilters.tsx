@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search } from "lucide-react"
 
 interface FiltersProps {
@@ -25,31 +26,38 @@ export function AdminFilters({ search, setSearch, sortBy, setSortBy, filterStatu
         />
       </div>
       <div className="flex gap-2 w-full md:w-auto">
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-          className="flex-1 md:flex-initial h-9 rounded-xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          <option value="all">Todos los estados</option>
-          <option value="pagados">Pagados</option>
-          <option value="pendientes-pago">Pendientes Pago</option>
-          <option value="entregados">Entregados</option>
-          <option value="pendientes-entrega">Por despachar</option>
-          <option value="delivery">Delivery</option>
-          <option value="recojo">Recojo Local</option>
-        </select>
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="flex-1 md:flex-initial h-9 rounded-xl border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          <option value="fecha-desc">Más recientes primero</option>
-          <option value="fecha-asc">Más antiguos primero</option>
-          <option value="nombre-asc">Nombre (A-Z)</option>
-          <option value="nombre-desc">Nombre (Z-A)</option>
-          <option value="cantidad-desc">Mayor cantidad</option>
-          <option value="cantidad-asc">Menor cantidad</option>
-        </select>
+        <Select value={filterStatus} onValueChange={setFilterStatus}>
+          <SelectTrigger className="flex-1 md:flex-initial h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer min-w-[140px]">
+            <SelectValue placeholder="Todos los estados" />
+          </SelectTrigger>
+          <SelectContent position="popper" className="bg-white rounded-xl border border-slate-100 shadow-lg text-xs">
+            <SelectGroup>
+              <SelectItem value="all">Todos los estados</SelectItem>
+              <SelectItem value="pagados">Pagados</SelectItem>
+              <SelectItem value="pendientes-pago">Pendientes Pago</SelectItem>
+              <SelectItem value="entregados">Entregados</SelectItem>
+              <SelectItem value="pendientes-entrega">Por despachar</SelectItem>
+              <SelectItem value="delivery">Delivery</SelectItem>
+              <SelectItem value="recojo">Recojo Local</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Select value={sortBy} onValueChange={setSortBy}>
+          <SelectTrigger className="flex-1 md:flex-initial h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer min-w-[170px]">
+            <SelectValue placeholder="Ordenar por" />
+          </SelectTrigger>
+          <SelectContent position="popper" className="bg-white rounded-xl border border-slate-100 shadow-lg text-xs">
+            <SelectGroup>
+              <SelectItem value="fecha-desc">Más recientes primero</SelectItem>
+              <SelectItem value="fecha-asc">Más antiguos primero</SelectItem>
+              <SelectItem value="nombre-asc">Nombre (A-Z)</SelectItem>
+              <SelectItem value="nombre-desc">Nombre (Z-A)</SelectItem>
+              <SelectItem value="cantidad-desc">Mayor cantidad</SelectItem>
+              <SelectItem value="cantidad-asc">Menor cantidad</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   )
