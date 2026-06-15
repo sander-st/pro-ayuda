@@ -14,18 +14,18 @@ interface FiltersProps {
 
 export function AdminFilters({ search, setSearch, sortBy, setSortBy, filterStatus, setFilterStatus }: FiltersProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between mb-4">
-      <div className="relative flex-1 sm:max-w-xs md:max-w-md">
+    <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between mb-4 w-full min-w-0">
+      <div className="relative w-full border border-amber-500 sm:w-72 md:w-96">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-4" />
         <Input
           type="text"
-          placeholder="Buscar por ticket, nombre o whatsapp..."
+          placeholder="Buscar reserva..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-9 bg-white border-slate-200 rounded-xl"
+          className="pl-9 bg-white border-slate-200 rounded-xl w-[calc(100%-3rem)] sm:w-full"
         />
       </div>
-      <div className="grid grid-cols-2 sm:flex gap-2">
+      <div className="grid grid-cols-2 sm:flex gap-2 w-full sm:w-auto">
         <Select value={filterStatus} onValueChange={setFilterStatus}>
           <SelectTrigger className="w-full sm:w-[140px] rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm cursor-pointer">
             <SelectValue placeholder="Todos los estados" />
